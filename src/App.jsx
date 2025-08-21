@@ -16,6 +16,16 @@ const GROUPS = [
   },
 ];
 
+const WIDTH = '240px'
+
+function ButtonRow({ children }) {
+  return (
+    <div className="d-flex gap-3" style={{ width: `${WIDTH}` }}>
+      {children}
+    </div>
+  );
+}
+
 function ActionButton({ onClick, icon, bg = "#6c757d", color = "white" }) {
   return (
     <button
@@ -118,7 +128,7 @@ export default function App() {
       ) : currentWord ? (
         <>
           <h1 className="mb-5 display-1 fw-bold" style={{ fontSize: "6rem" }}>{currentWord}</h1>
-          <div className="progress mb-3" style={{ height: "1.5rem", width: "240px" }}>
+          <div className="progress mb-3" style={{ height: "1.5rem", width: `${WIDTH}` }}>
             <div
               className="progress-bar"
               role="progressbar"
@@ -128,25 +138,25 @@ export default function App() {
               aria-valuemax="100"
             ></div>
           </div>
-          <div className="d-flex gap-3" style={{ width: "240px" }}>
+          <ButtonRow>
             <ActionButton onClick={handleCorrect} icon="check2" bg="#198754" />
             <ActionButton onClick={handleSkipped} icon="arrow-right" />
-          </div>
+          </ButtonRow>
         </>
       ) : skippedWords.length > 0 && !isReview ? (
         <>
           <h1 className="mb-5" style={{ fontSize: "5rem" }}>🎉</h1>
-          <div className="d-flex gap-3" style={{ width: "240px" }}>
+          <ButtonRow>
             <ActionButton onClick={handleStartReview} icon="arrow-repeat" bg="blue" />
             <ActionButton onClick={handleReset} icon="arrow-left" />
-          </div>
+          </ButtonRow>
         </>
       ) : (
         <>
           <h1 className="mb-5" style={{ fontSize: "5rem" }}>🎉</h1>
-          <div className="d-flex" style={{ width: "240px" }}>
+          <ButtonRow>
             <ActionButton onClick={handleReset} icon="arrow-left" />
-          </div>
+          </ButtonRow>
         </>
       )}
     </div>
