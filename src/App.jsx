@@ -16,6 +16,24 @@ const GROUPS = [
   },
 ];
 
+function ActionButton({ onClick, icon, bg = "#6c757d", color = "white" }) {
+  return (
+    <button
+      className="btn d-flex align-items-center justify-content-center flex-fill"
+      style={{
+        backgroundColor: bg,
+        color,
+        height: "64px",
+        fontSize: "1.5rem",
+        borderRadius: "0.75rem",
+      }}
+      onClick={onClick}
+    >
+      <i className={`bi bi-${icon}`} style={{ fontSize: "1.5rem" }}></i>
+    </button>
+  );
+}
+
 export default function App() {
   const [group, setGroup] = useState(null);
   const [words, setWords] = useState([]);
@@ -111,40 +129,24 @@ export default function App() {
             ></div>
           </div>
           <div className="d-flex gap-3" style={{ width: "240px" }}>
-            <button
-              className="btn d-flex align-items-center justify-content-center flex-fill"
-              style={{ backgroundColor: "#198754", color: "white", height: "64px", fontSize: "1.5rem", borderRadius: "0.75rem" }}
-              onClick={handleCorrect}
-            >
-              <i className="bi bi-check2" style={{ fontSize: "1.5rem" }}></i>
-            </button>
-            <button
-              className="btn d-flex align-items-center justify-content-center flex-fill"
-              style={{ backgroundColor: "#6c757d", color: "white", height: "64px", borderRadius: "0.75rem" }}
-              onClick={handleSkipped}
-            >
-              <i className="bi bi-arrow-right" style={{ fontSize: "1.5rem" }}></i>
-            </button>
+            <ActionButton onClick={handleCorrect} icon="check2" bg="#198754" />
+            <ActionButton onClick={handleSkipped} icon="arrow-right" />
           </div>
         </>
       ) : skippedWords.length > 0 && !isReview ? (
         <>
           <h1 className="mb-5" style={{ fontSize: "5rem" }}>🎉</h1>
-          <div className="d-flex gap-3">
-            <button className="btn btn-primary d-flex align-items-center gap-2" onClick={handleStartReview}>
-              <i className="bi bi-arrow-repeat"></i>
-            </button>
-            <button className="btn btn-secondary" onClick={handleReset}>
-              <i className="bi bi-arrow-left"></i>
-            </button>
+          <div className="d-flex gap-3" style={{ width: "240px" }}>
+            <ActionButton onClick={handleStartReview} icon="arrow-repeat" bg="blue" />
+            <ActionButton onClick={handleReset} icon="arrow-left" />
           </div>
         </>
       ) : (
         <>
           <h1 className="mb-5" style={{ fontSize: "5rem" }}>🎉</h1>
-          <button className="btn btn-secondary" onClick={handleReset}>
-            <i className="bi bi-arrow-left"></i>
-          </button>
+          <div className="d-flex" style={{ width: "240px" }}>
+            <ActionButton onClick={handleReset} icon="arrow-left" />
+          </div>
         </>
       )}
     </div>
