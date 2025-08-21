@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import "bootstrap-icons/font/bootstrap-icons.css";
 
 const GROUPS = [
   {
@@ -14,45 +15,6 @@ const GROUPS = [
     words: ["all", "are", "my", "her", "they", "one", "two", "do", "does", "were"],
   },
 ];
-
-function SkipArrowIcon({ color = "white", size = 24 }) {
-  return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      width={size}
-      height={size}
-      fill="none"
-      viewBox="0 0 24 24"
-      stroke={color}
-      strokeWidth="3"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <path d="M5 12h13" />
-      <path d="M12 5l7 7-7 7" />
-    </svg>
-  );
-}
-
-function ReviewArrowIcon({ color = "white", size = 24 }) {
-  return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      width={size}
-      height={size}
-      fill="none"
-      viewBox="0 0 24 24"
-      stroke={color}
-      strokeWidth="2.5"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <path d="M3 12a9 9 0 1 1 3 6.7" />
-      <path d="M3 12V6" />
-      <path d="M3 6h6" />
-    </svg>
-  );
-}
 
 export default function App() {
   const [group, setGroup] = useState(null);
@@ -118,9 +80,7 @@ export default function App() {
   const progress = ((initialCount - words.length) / initialCount) * 100;
 
   return (
-    <div
-      className="d-flex flex-column justify-content-center align-items-center min-vh-100 w-100"
-    >
+    <div className="d-flex flex-column justify-content-center align-items-center min-vh-100 w-100">
       {!group ? (
         <>
           <h1 className="mb-4 fw-semibold display-5 text-center">Tricky Words</h1>
@@ -148,8 +108,7 @@ export default function App() {
               aria-valuenow={progress}
               aria-valuemin="0"
               aria-valuemax="100"
-            >
-            </div>
+            ></div>
           </div>
           <div className="d-flex gap-3" style={{ width: "240px" }}>
             <button
@@ -157,14 +116,14 @@ export default function App() {
               style={{ backgroundColor: "#198754", color: "white", height: "64px", fontSize: "1.5rem", borderRadius: "0.75rem" }}
               onClick={handleCorrect}
             >
-              ✓
+              <i className="bi bi-check2" style={{ fontSize: "1.5rem" }}></i>
             </button>
             <button
               className="btn d-flex align-items-center justify-content-center flex-fill"
               style={{ backgroundColor: "#6c757d", color: "white", height: "64px", borderRadius: "0.75rem" }}
               onClick={handleSkipped}
             >
-              <SkipArrowIcon size={28} color="white" />
+              <i className="bi bi-arrow-right" style={{ fontSize: "1.5rem" }}></i>
             </button>
           </div>
         </>
@@ -172,31 +131,19 @@ export default function App() {
         <>
           <h1 className="mb-5" style={{ fontSize: "5rem" }}>🎉</h1>
           <div className="d-flex gap-3">
-            <button
-              className="btn btn-primary d-flex align-items-center justify-content-center"
-              onClick={handleStartReview}
-              style={{ width: "64px", height: "64px", borderRadius: "0.75rem" }}
-            >
-              <ReviewArrowIcon size={32} color="white" />
+            <button className="btn btn-primary d-flex align-items-center gap-2" onClick={handleStartReview}>
+              <i className="bi bi-arrow-repeat"></i>
             </button>
-            <button
-              className="btn btn-secondary d-flex align-items-center justify-content-center"
-              onClick={handleReset}
-              style={{ width: "64px", height: "64px", borderRadius: "0.75rem" }}
-            >
-              ←
+            <button className="btn btn-secondary" onClick={handleReset}>
+              <i className="bi bi-arrow-left"></i>
             </button>
           </div>
         </>
       ) : (
         <>
           <h1 className="mb-5" style={{ fontSize: "5rem" }}>🎉</h1>
-          <button
-            className="btn btn-secondary d-flex align-items-center justify-content-center"
-            onClick={handleReset}
-            style={{ width: "64px", height: "64px", borderRadius: "0.75rem" }}
-          >
-            ←
+          <button className="btn btn-secondary" onClick={handleReset}>
+            <i className="bi bi-arrow-left"></i>
           </button>
         </>
       )}
