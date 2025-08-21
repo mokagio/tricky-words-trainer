@@ -70,7 +70,7 @@ export default function App() {
         </>
       ) : currentWord ? (
         <>
-          <h1 className="mb-4">{currentWord}</h1>
+          <h1 className="mb-4 display-1 fw-bold">{currentWord}</h1>
           <p className="mb-3 text-muted">
             {words.length - 1} word{words.length - 1 !== 1 ? "s" : ""} remaining
           </p>
