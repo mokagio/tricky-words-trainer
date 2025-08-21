@@ -34,7 +34,41 @@ const GROUPS = [
   },
 ];
 
+const TRICKY_COLORS = GROUPS.map(group => group.background);
+
 const WIDTH = '240px'
+
+function shuffleColors(length) {
+  const result = [];
+  while (result.length < length) {
+    const options = TRICKY_COLORS.filter(c => c !== result[result.length - 1]);
+    const next = options[Math.floor(Math.random() * options.length)];
+    result.push(next);
+  }
+  return result;
+}
+
+export function TrickyTitle() {
+  const text = 'Tricky Words';
+  const [colors, setColors] = useState(() => shuffleColors(text.length));
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setColors(shuffleColors(text.length));
+    }, 1000);
+    return () => clearInterval(interval);
+  }, [text.length]);
+
+  return (
+    <h1 className="mb-5 fw-semibold text-center" style={{ fontSize: '4rem' }}>
+      {text.split('').map((letter, i) => (
+        <span key={i} style={{ color: colors[i] }}>
+          {letter}
+        </span>
+      ))}
+    </h1>
+  );
+}
 
 function ButtonRow({ children }) {
   return (
@@ -130,9 +164,7 @@ export default function App() {
     <div className="d-flex flex-column justify-content-center align-items-center min-vh-100 w-100">
       {!group ? (
         <>
-          <h1 className="mb-5 fw-semibold text-center" style={{ fontSize: '4rem' }}>
-            Tricky Words
-          </h1>
+          <TrickyTitle />
           <div className="d-flex flex-column gap-3" style={{ width: "240px" }}>
             {GROUPS.map(({ name, background, text }) => (
               <button
