@@ -119,7 +119,7 @@ export default function App() {
         </>
       ) : currentWord ? (
         <>
-          <h1 className="mb-4 display-1 fw-bold" style={{ fontSize: "6rem" }}>{currentWord}</h1>
+          <h1 className="mb-5 display-1 fw-bold" style={{ fontSize: "6rem" }}>{currentWord}</h1>
           <div className="progress mb-3" style={{ height: "1.5rem", width: "240px" }}>
             <div
               className="progress-bar"
