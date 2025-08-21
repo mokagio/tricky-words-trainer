@@ -3,16 +3,24 @@ import "bootstrap-icons/font/bootstrap-icons.css";
 
 const GROUPS = [
   {
-    name: "Red",
-    background: "#dc3545", // Bootstrap danger color
+    name: "Blue",
+    background: "#0d6efd",
     text: "white",
-    words: ["I", "the", "he", "she", "me", "we", "be", "was", "to", "do", "of"],
+    words: [
+      "I", "the", "he", "she",
+      "me", "we", "be", "was",
+      "to", "do", "are", "all"
+    ],
   },
   {
     name: "Yellow",
     background: "#ffc107",
-    text: "black",
-    words: ["are", "all", "you", "your", "come", "some", "said", "here", "there", "they", "go", "no", "so", "my"],
+    text: "white",
+    words: [
+      "you", "your", "come", "some",
+      "said", "here", "there", "they",
+      "go", "no", "so", "my"
+    ],
   },
   {
     name: "Green",
@@ -21,8 +29,8 @@ const GROUPS = [
     words: ["one", "by", "like", "have", "live", "give", "little", "down", "what", "when", "why", "where"],
   },
   {
-    name: "Blue",
-    background: "#0d6efd",
+    name: "Red",
+    background: "#dc3545",
     text: "white",
     words: ["who", "which", "any", "many", "more", "before", "other", "were", "because", "want", "saw", "two", "put", "could", "should", "would", "right", "their"],
   },
