@@ -34,6 +34,26 @@ function SkipArrowIcon({ color = "white", size = 24 }) {
   );
 }
 
+function ReviewArrowIcon({ color = "white", size = 24 }) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width={size}
+      height={size}
+      fill="none"
+      viewBox="0 0 24 24"
+      stroke={color}
+      strokeWidth="2.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <path d="M3 12a9 9 0 1 1 3 6.7" />
+      <path d="M3 12V6" />
+      <path d="M3 6h6" />
+    </svg>
+  );
+}
+
 export default function App() {
   const [group, setGroup] = useState(null);
   const [words, setWords] = useState([]);
@@ -150,22 +170,33 @@ export default function App() {
         </>
       ) : skippedWords.length > 0 && !isReview ? (
         <>
-          <h1 className="mb-4">🎉</h1>
-          <p className="mb-3">You skipped {skippedWords.length} word{skippedWords.length !== 1 ? "s" : ""}. Want to try them again?</p>
+          <h1 className="mb-5" style={{ fontSize: "5rem" }}>🎉</h1>
           <div className="d-flex gap-3">
-            <button className="btn btn-primary" onClick={handleStartReview}>
-              Review Skipped Words
+            <button
+              className="btn btn-primary d-flex align-items-center justify-content-center"
+              onClick={handleStartReview}
+              style={{ width: "64px", height: "64px", borderRadius: "0.75rem" }}
+            >
+              <ReviewArrowIcon size={32} color="white" />
             </button>
-            <button className="btn btn-secondary" onClick={handleReset}>
-              ← Back
+            <button
+              className="btn btn-secondary d-flex align-items-center justify-content-center"
+              onClick={handleReset}
+              style={{ width: "64px", height: "64px", borderRadius: "0.75rem" }}
+            >
+              ←
             </button>
           </div>
         </>
       ) : (
         <>
-          <h1 className="mb-4">Well done! You finished {isReview ? "reviewing skipped" : "the"} {group} group 🎉</h1>
-          <button className="btn btn-secondary" onClick={handleReset}>
-            ← Back
+          <h1 className="mb-5" style={{ fontSize: "5rem" }}>🎉</h1>
+          <button
+            className="btn btn-secondary d-flex align-items-center justify-content-center"
+            onClick={handleReset}
+            style={{ width: "64px", height: "64px", borderRadius: "0.75rem" }}
+          >
+            ←
           </button>
         </>
       )}
