@@ -119,7 +119,7 @@ export default function App() {
         </>
       ) : currentWord ? (
         <>
-          <h1 className="mb-4 display-1 fw-bold">{currentWord}</h1>
+          <h1 className="mb-4 display-1 fw-bold" style={{ fontSize: "6rem" }}>{currentWord}</h1>
           <div className="progress mb-3" style={{ height: "1.5rem", width: "240px" }}>
             <div
               className="progress-bar"
@@ -131,17 +131,17 @@ export default function App() {
             >
             </div>
           </div>
-          <div className="d-flex gap-3">
+          <div className="d-flex gap-3" style={{ width: "240px" }}>
             <button
-              className="btn d-flex align-items-center justify-content-center"
-              style={{ backgroundColor: "#198754", color: "white", width: "64px", height: "64px", fontSize: "1.5rem", borderRadius: "0.75rem" }}
+              className="btn d-flex align-items-center justify-content-center flex-fill"
+              style={{ backgroundColor: "#198754", color: "white", height: "64px", fontSize: "1.5rem", borderRadius: "0.75rem" }}
               onClick={handleCorrect}
             >
               ✓
             </button>
             <button
-              className="btn d-flex align-items-center justify-content-center"
-              style={{ backgroundColor: "#6c757d", color: "white", width: "64px", height: "64px", borderRadius: "0.75rem" }}
+              className="btn d-flex align-items-center justify-content-center flex-fill"
+              style={{ backgroundColor: "#6c757d", color: "white", height: "64px", borderRadius: "0.75rem" }}
               onClick={handleSkipped}
             >
               <SkipArrowIcon size={28} color="white" />
