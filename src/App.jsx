@@ -38,34 +38,72 @@ const TRICKY_COLORS = GROUPS.map(group => group.background);
 
 const WIDTH = '240px'
 
-function shuffleColors(length) {
-  const result = [];
-  while (result.length < length) {
-    const options = TRICKY_COLORS.filter(c => c !== result[result.length - 1]);
-    const next = options[Math.floor(Math.random() * options.length)];
-    result.push(next);
+function shuffleColorsAndTilts(length) {
+  const options = [...TRICKY_COLORS];
+  const colors = [];
+  const tilts = [];
+
+  let lastColor = null;
+  for (let i = 0; i < length; i++) {
+    const availableColors = options.filter(c => c !== lastColor);
+    const color = availableColors[Math.floor(Math.random() * availableColors.length)];
+    lastColor = color;
+    colors.push(color);
+
+    const tilt = (Math.random() * 10 - 5).toFixed(2); // -5 to +5 degrees
+    tilts.push(tilt);
   }
-  return result;
+
+  return { colors, tilts };
 }
 
 export function TrickyTitle() {
-  const text = 'Tricky Words';
-  const [colors, setColors] = useState(() => shuffleColors(text.length));
+  const text = "Tricky Words";
+  const visibleChars = text.replaceAll(" ", "").length;
+
+  const [letterColors, setLetterColors] = useState(() =>
+    shuffleColorsAndTilts(visibleChars).colors
+  );
+  const [letterTilts, setLetterTilts] = useState(() =>
+    shuffleColorsAndTilts(visibleChars).tilts
+  );
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setColors(shuffleColors(text.length));
-    }, 1000);
+      const visibleChars = text.replaceAll(" ", "").length;
+      const { colors, tilts } = shuffleColorsAndTilts(visibleChars);
+      setLetterColors(colors);
+      setLetterTilts(tilts);
+    }, 600);
+
     return () => clearInterval(interval);
-  }, [text.length]);
+  }, []);
+
+  let colorIndex = 0;
 
   return (
-    <h1 className="mb-5 fw-semibold text-center" style={{ fontSize: '4rem' }}>
-      {text.split('').map((letter, i) => (
-        <span key={i} style={{ color: colors[i] }}>
-          {letter}
-        </span>
-      ))}
+    <h1 className="mb-5 fw-semibold text-center" style={{ fontSize: "4.5rem" }}>
+      {text.split("").map((char, idx) => {
+        if (char === " ") {
+          return <span key={idx}>&nbsp;</span>;
+        }
+
+        const span = (
+          <span
+            key={idx}
+            style={{
+              color: letterColors[colorIndex] || "inherit",
+              display: "inline-block",
+              transform: `rotate(${letterTilts[colorIndex] || 0}deg)`
+            }}
+          >
+            {char}
+          </span>
+        );
+
+        colorIndex++;
+        return span;
+      })}
     </h1>
   );
 }
