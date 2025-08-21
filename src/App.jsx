@@ -26,7 +26,7 @@ function ButtonRow({ children }) {
   );
 }
 
-function ActionButton({ onClick, icon, bg = "#6c757d", color = "white" }) {
+function ActionButton({ onClick, icon, label, bg = "#6c757d", color = "white" }) {
   return (
     <button
       className="btn d-flex align-items-center justify-content-center flex-fill"
@@ -39,7 +39,8 @@ function ActionButton({ onClick, icon, bg = "#6c757d", color = "white" }) {
       }}
       onClick={onClick}
     >
-      <i className={`bi bi-${icon}`} style={{ fontSize: "1.5rem" }}></i>
+      {icon && <i className={`bi bi-${icon}`} style={{ fontSize: "1.5rem" }}></i>}
+      {label && <span>{label}</span>}
     </button>
   );
 }
@@ -112,18 +113,15 @@ export default function App() {
       {!group ? (
         <>
           <h1 className="mb-4 fw-semibold display-5 text-center">Tricky Words</h1>
-          <div className="d-flex gap-3">
+          <ButtonRow width="auto">
             {GROUPS.map(({ name, background, text }) => (
-              <button
-                key={name}
-                className="btn btn-lg"
-                style={{ backgroundColor: background, color: text }}
+              <ActionButton
+                label={name}
+                bg={background}
                 onClick={() => setGroup(name)}
-              >
-                {name}
-              </button>
+              />
             ))}
-          </div>
+          </ButtonRow>
         </>
       ) : currentWord ? (
         <>
