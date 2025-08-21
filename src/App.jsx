@@ -1,5 +1,10 @@
 import { useState } from "react";
 
+const GROUPS = [
+  { name: "Blue", background: "blue", text: "white" },
+  { name: "Yellow", background: "#ffc107", text: "black" },
+];
+
 export default function App() {
   const [group, setGroup] = useState(null);
 
@@ -9,12 +14,16 @@ export default function App() {
         <>
           <h1 className="mb-4 fw-semibold display-5 text-center">Pick a tricky word group</h1>
           <div className="d-flex gap-3">
-            <button className="btn btn-primary btn-lg" onClick={() => setGroup("Blue")}>
-              Blue
-            </button>
-            <button className="btn btn-warning btn-lg text-white" onClick={() => setGroup("Yellow")}>
-              Yellow
-            </button>
+            {GROUPS.map(({ name, background, text }) => (
+              <button
+                key={name}
+                className="btn btn-lg"
+                style={{ backgroundColor: background, color: text }}
+                onClick={() => setGroup(name)}
+              >
+                {name}
+              </button>
+            ))}
           </div>
         </>
       ) : (
