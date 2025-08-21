@@ -184,6 +184,11 @@ export default function App() {
           </ButtonRow>
         </>
       )}
+      {!group && (
+        <footer className="mt-5 text-muted small text-center">
+          © 2025 · <a href="https://github.com/mokagio/tricky-words-trainer" target="_blank">View Source</a>
+        </footer>
+      )}
     </div>
   );
 }
