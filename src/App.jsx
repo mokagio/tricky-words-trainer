@@ -64,7 +64,9 @@ const GROUPS = [
   },
 ];
 
-const TRICKY_COLORS = GROUPS.map(group => group.background);
+const TRICKY_COLORS = GROUPS
+  .filter(group => group.name !== "Brown") // Brown looks bad in the title
+  .map(group => group.background);
 
 const WIDTH = '240px'
 
@@ -118,7 +120,6 @@ export function TrickyTitle() {
         fontSize: 'clamp(3.5rem, 8vw, 4.5rem)',
         wordBreak: 'keep-all',
         whiteSpace: 'nowrap',
-        overflow: 'hidden',
         textOverflow: 'ellipsis'
       }}
     >
@@ -226,6 +227,8 @@ export default function App() {
     setInitialCount(0);
   };
 
+  const handleClose = handleReset
+
   const handleStartReview = () => {
     setWords(skippedWords);
     setCurrentWord(skippedWords[0] || null);
@@ -263,6 +266,13 @@ export default function App() {
         </>
       ) : currentWord ? (
         <>
+          <button
+            onClick={handleClose}
+            className="position-absolute top-0 end-0 m-3 btn btn-link text-dark fs-4"
+            aria-label="Close"
+          >
+            <i className="bi bi-x-circle-fill" style={{ color: "#6c757d" }}></i>
+          </button>
           <h1 className="mb-5 display-1 fw-bold" style={{ fontSize: "6rem" }}>{currentWord}</h1>
           <div className="progress mb-3" style={{ height: "1.5rem", width: `${WIDTH}` }}>
             <div
