@@ -41,6 +41,7 @@ export default function App() {
   const [correctWords, setCorrectWords] = useState([]);
   const [skippedWords, setSkippedWords] = useState([]);
   const [isReview, setIsReview] = useState(false);
+  const [initialCount, setInitialCount] = useState(0);
 
   useEffect(() => {
     if (group) {
@@ -48,6 +49,7 @@ export default function App() {
       if (selectedGroup) {
         const shuffled = [...selectedGroup.words].sort(() => Math.random() - 0.5);
         setWords(shuffled);
+        setInitialCount(shuffled.length);
         setCurrentWord(shuffled[0]);
         setCorrectWords([]);
         setSkippedWords([]);
@@ -81,16 +83,19 @@ export default function App() {
     setCorrectWords([]);
     setSkippedWords([]);
     setIsReview(false);
+    setInitialCount(0);
   };
 
   const handleStartReview = () => {
     setWords(skippedWords);
     setCurrentWord(skippedWords[0] || null);
+    setInitialCount(skippedWords.length);
     setSkippedWords([]);
     setIsReview(true);
   };
 
   const selectedGroup = GROUPS.find((g) => g.name === group);
+  const progress = ((initialCount - words.length) / initialCount) * 100;
 
   return (
     <div
@@ -115,9 +120,17 @@ export default function App() {
       ) : currentWord ? (
         <>
           <h1 className="mb-4 display-1 fw-bold">{currentWord}</h1>
-          <p className="mb-3 text-muted">
-            {words.length - 1} word{words.length - 1 !== 1 ? "s" : ""} remaining
-          </p>
+          <div className="progress mb-3" style={{ height: "1.5rem", width: "240px" }}>
+            <div
+              className="progress-bar"
+              role="progressbar"
+              style={{ width: `${progress}%`, backgroundColor: '#ffa500' }}
+              aria-valuenow={progress}
+              aria-valuemin="0"
+              aria-valuemax="100"
+            >
+            </div>
+          </div>
           <div className="d-flex gap-3">
             <button
               className="btn d-flex align-items-center justify-content-center"
