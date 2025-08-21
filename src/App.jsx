@@ -42,6 +42,9 @@ export default function App() {
   const [group, setGroup] = useState(null);
   const [words, setWords] = useState([]);
   const [currentWord, setCurrentWord] = useState(null);
+  const [correctWords, setCorrectWords] = useState([]);
+  const [skippedWords, setSkippedWords] = useState([]);
+  const [isReview, setIsReview] = useState(false);
 
   useEffect(() => {
     if (group) {
@@ -50,11 +53,18 @@ export default function App() {
         const shuffled = [...selectedGroup.words].sort(() => Math.random() - 0.5);
         setWords(shuffled);
         setCurrentWord(shuffled[0]);
+        setCorrectWords([]);
+        setSkippedWords([]);
+        setIsReview(false);
       }
     }
   }, [group]);
 
-  const handleNext = () => {
+  const goToNextWord = (wordList, updateListFn) => {
+    if (currentWord) {
+      updateListFn((prev) => [...prev, currentWord]);
+    }
+
     if (words.length > 1) {
       const [, ...rest] = words;
       setWords(rest);
@@ -65,10 +75,23 @@ export default function App() {
     }
   };
 
+  const handleCorrect = () => goToNextWord(correctWords, setCorrectWords);
+  const handleSkipped = () => goToNextWord(skippedWords, setSkippedWords);
+
   const handleReset = () => {
     setGroup(null);
     setWords([]);
     setCurrentWord(null);
+    setCorrectWords([]);
+    setSkippedWords([]);
+    setIsReview(false);
+  };
+
+  const handleStartReview = () => {
+    setWords(skippedWords);
+    setCurrentWord(skippedWords[0] || null);
+    setSkippedWords([]);
+    setIsReview(true);
   };
 
   const selectedGroup = GROUPS.find((g) => g.name === group);
@@ -104,22 +127,35 @@ export default function App() {
             <button
               className="btn d-flex align-items-center justify-content-center"
               style={{ backgroundColor: "#198754", color: "white", width: "64px", height: "64px", fontSize: "1.5rem", borderRadius: "0.75rem" }}
-              onClick={handleNext}
+              onClick={handleCorrect}
             >
               ✓
             </button>
             <button
               className="btn d-flex align-items-center justify-content-center"
               style={{ backgroundColor: "#6c757d", color: "white", width: "64px", height: "64px", borderRadius: "0.75rem" }}
-              onClick={handleNext}
+              onClick={handleSkipped}
             >
               <SkipArrowIcon size={28} color="white" />
             </button>
           </div>
         </>
-      ) : (
+      ) : skippedWords.length > 0 && !isReview ? (
         <>
           <h1 className="mb-4">Well done! You finished the {group} group 🎉</h1>
+          <p className="mb-3">You skipped {skippedWords.length} word{skippedWords.length !== 1 ? "s" : ""}. Want to try them again?</p>
+          <div className="d-flex gap-3">
+            <button className="btn btn-primary" onClick={handleStartReview}>
+              Review Skipped Words
+            </button>
+            <button className="btn btn-secondary" onClick={handleReset}>
+              ← Go back
+            </button>
+          </div>
+        </>
+      ) : (
+        <>
+          <h1 className="mb-4">Well done! You finished {isReview ? "reviewing skipped" : "the"} {group} group 🎉</h1>
           <button className="btn btn-secondary" onClick={handleReset}>
             ← Go back
           </button>
