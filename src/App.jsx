@@ -131,15 +131,24 @@ export default function App() {
       {!group ? (
         <>
           <h1 className="mb-4 fw-semibold display-5 text-center">Tricky Words</h1>
-          <ButtonRow width="auto">
+          <div className="d-flex flex-column gap-3" style={{ width: "240px" }}>
             {GROUPS.map(({ name, background, text }) => (
-              <ActionButton
-                label={name}
-                bg={background}
-                onClick={() => setGroup(name)}
-              />
+              <button
+              key={name}
+              className="btn d-flex align-items-center justify-content-center"
+              style={{
+                backgroundColor: background,
+                color: text,
+                height: "64px",
+                fontSize: "1.5rem",
+                borderRadius: "0.75rem",
+              }}
+              onClick={() => setGroup(name)}
+            >
+                {name}
+            </button>
             ))}
-          </ButtonRow>
+          </div>
         </>
       ) : currentWord ? (
         <>
