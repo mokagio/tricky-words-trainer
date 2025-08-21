@@ -23,22 +23,44 @@ const GROUPS = [
     ],
   },
   {
-    name: "Green",
-    background: "#198754",
-    text: "white",
-    words: ["one", "by", "like", "have", "live", "give", "little", "down", "what", "when", "why", "where"],
-  },
-  {
     name: "Red",
     background: "#dc3545",
     text: "white",
-    words: ["who", "which", "any", "many", "more", "before", "other", "were", "because", "want", "saw", "two", "put", "could", "should", "would", "right", "their"],
+    words: [
+      "one", "by", "only", "old",
+      "like", "have", "live", "give",
+      "little", "down", "what", "when"
+    ],
   },
   {
-    name: "Purple",
-    background: "#6f42c1",
+    name: "Green",
+    background: "#198754",
     text: "white",
-    words: ["once", "upon", "always", "also", "after", "every", "eight", "mother", "father"],
+    words: [
+      "why", "where", "who", "which",
+      "any", "many", "more", "before",
+      "other", "were", "because", "want"
+    ],
+  },
+  {
+    name: "Pink",
+    background: "#f472b6", // pink-400 from Tailwind CSS
+    text: "white",
+    words: [
+      "saw", "put", "could", "should",
+      "would", "right",  "two" , "four",
+      "goes", "does", "made", "their"
+    ],
+  },
+  {
+    name: "Brown", // called purple in other groupings
+    background: "#a0522d", // sienna brown
+    text: "white",
+    words: [
+      "once", "upon", "always", "also",
+      "of", "eight", "love", "cover",
+      "after", "every", "mother", "father"
+    ],
   },
 ];
 
