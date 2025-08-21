@@ -15,6 +15,29 @@ const GROUPS = [
   },
 ];
 
+const comicFont = {
+  fontFamily: `'Comic Sans MS', 'Comic Neue', cursive`,
+};
+
+function SkipArrowIcon({ color = "white", size = 24 }) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width={size}
+      height={size}
+      fill="none"
+      viewBox="0 0 24 24"
+      stroke={color}
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <path d="M5 12h13" />
+      <path d="M12 5l7 7-7 7" />
+    </svg>
+  );
+}
+
 export default function App() {
   const [group, setGroup] = useState(null);
   const [words, setWords] = useState([]);
@@ -51,7 +74,10 @@ export default function App() {
   const selectedGroup = GROUPS.find((g) => g.name === group);
 
   return (
-    <div className="d-flex flex-column justify-content-center align-items-center min-vh-100 w-100">
+    <div
+      className="d-flex flex-column justify-content-center align-items-center min-vh-100 w-100"
+      style={comicFont}
+    >
       {!group ? (
         <>
           <h1 className="mb-4 fw-semibold display-5 text-center">Pick a tricky word group</h1>
@@ -74,9 +100,22 @@ export default function App() {
           <p className="mb-3 text-muted">
             {words.length - 1} word{words.length - 1 !== 1 ? "s" : ""} remaining
           </p>
-          <button className="btn btn-outline-primary" onClick={handleNext}>
-            Next
-          </button>
+          <div className="d-flex gap-3">
+            <button
+              className="btn btn-lg d-flex align-items-center justify-content-center"
+              style={{ backgroundColor: "#198754", color: "white", width: "80px", height: "80px", fontSize: "2rem", borderRadius: "0.75rem" }}
+              onClick={handleNext}
+            >
+              ✓
+            </button>
+            <button
+              className="btn btn-lg d-flex align-items-center justify-content-center"
+              style={{ backgroundColor: "#6c757d", color: "white", width: "80px", height: "80px", borderRadius: "0.75rem" }}
+              onClick={handleNext}
+            >
+              <SkipArrowIcon size={32} color="white" />
+            </button>
+          </div>
         </>
       ) : (
         <>
