@@ -28,7 +28,7 @@ function SkipArrowIcon({ color = "white", size = 24 }) {
       fill="none"
       viewBox="0 0 24 24"
       stroke={color}
-      strokeWidth="2"
+      strokeWidth="3"
       strokeLinecap="round"
       strokeLinejoin="round"
     >
@@ -102,18 +102,18 @@ export default function App() {
           </p>
           <div className="d-flex gap-3">
             <button
-              className="btn btn-lg d-flex align-items-center justify-content-center"
-              style={{ backgroundColor: "#198754", color: "white", width: "80px", height: "80px", fontSize: "2rem", borderRadius: "0.75rem" }}
+              className="btn d-flex align-items-center justify-content-center"
+              style={{ backgroundColor: "#198754", color: "white", width: "64px", height: "64px", fontSize: "1.5rem", borderRadius: "0.75rem" }}
               onClick={handleNext}
             >
               ✓
             </button>
             <button
-              className="btn btn-lg d-flex align-items-center justify-content-center"
-              style={{ backgroundColor: "#6c757d", color: "white", width: "80px", height: "80px", borderRadius: "0.75rem" }}
+              className="btn d-flex align-items-center justify-content-center"
+              style={{ backgroundColor: "#6c757d", color: "white", width: "64px", height: "64px", borderRadius: "0.75rem" }}
               onClick={handleNext}
             >
-              <SkipArrowIcon size={32} color="white" />
+              <SkipArrowIcon size={28} color="white" />
             </button>
           </div>
         </>
