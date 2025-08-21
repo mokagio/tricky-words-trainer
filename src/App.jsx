@@ -130,7 +130,9 @@ export default function App() {
     <div className="d-flex flex-column justify-content-center align-items-center min-vh-100 w-100">
       {!group ? (
         <>
-          <h1 className="mb-4 fw-semibold display-5 text-center">Tricky Words</h1>
+          <h1 className="mb-5 fw-semibold text-center" style={{ fontSize: '4rem' }}>
+            Tricky Words
+          </h1>
           <div className="d-flex flex-column gap-3" style={{ width: "240px" }}>
             {GROUPS.map(({ name, background, text }) => (
               <button
