@@ -15,10 +15,6 @@ const GROUPS = [
   },
 ];
 
-const comicFont = {
-  fontFamily: `'Comic Sans MS', 'Comic Neue', cursive`,
-};
-
 function SkipArrowIcon({ color = "white", size = 24 }) {
   return (
     <svg
@@ -99,11 +95,10 @@ export default function App() {
   return (
     <div
       className="d-flex flex-column justify-content-center align-items-center min-vh-100 w-100"
-      style={comicFont}
     >
       {!group ? (
         <>
-          <h1 className="mb-4 fw-semibold display-5 text-center">Pick a tricky word group</h1>
+          <h1 className="mb-4 fw-semibold display-5 text-center">Tricky Words</h1>
           <div className="d-flex gap-3">
             {GROUPS.map(({ name, background, text }) => (
               <button
@@ -142,14 +137,14 @@ export default function App() {
         </>
       ) : skippedWords.length > 0 && !isReview ? (
         <>
-          <h1 className="mb-4">Well done! You finished the {group} group 🎉</h1>
+          <h1 className="mb-4">🎉</h1>
           <p className="mb-3">You skipped {skippedWords.length} word{skippedWords.length !== 1 ? "s" : ""}. Want to try them again?</p>
           <div className="d-flex gap-3">
             <button className="btn btn-primary" onClick={handleStartReview}>
               Review Skipped Words
             </button>
             <button className="btn btn-secondary" onClick={handleReset}>
-              ← Go back
+              ← Back
             </button>
           </div>
         </>
@@ -157,7 +152,7 @@ export default function App() {
         <>
           <h1 className="mb-4">Well done! You finished {isReview ? "reviewing skipped" : "the"} {group} group 🎉</h1>
           <button className="btn btn-secondary" onClick={handleReset}>
-            ← Go back
+            ← Back
           </button>
         </>
       )}
