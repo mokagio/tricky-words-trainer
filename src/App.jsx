@@ -90,7 +90,16 @@ export function TrickyTitle() {
   let colorIndex = 0;
 
   return (
-    <h1 className="mb-5 fw-semibold text-center" style={{ fontSize: "4.5rem" }}>
+    <h1
+      className="mb-5 fw-semibold text-center"
+      style={{
+        fontSize: 'clamp(3.5rem, 8vw, 4.5rem)',
+        wordBreak: 'keep-all',
+        whiteSpace: 'nowrap',
+        overflow: 'hidden',
+        textOverflow: 'ellipsis'
+      }}
+    >
       {text.split("").map((char, idx) => {
         if (char === " ") {
           return <span key={idx}>&nbsp;</span>;
