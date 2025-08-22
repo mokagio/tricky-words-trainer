@@ -205,10 +205,12 @@ export default function App() {
   const [skippedWords, setSkippedWords] = useState([]);
   const [isReview, setIsReview] = useState(false);
   const [initialCount, setInitialCount] = useState(0);
+  const [sessionColor, setSessionColor] = useState(null);
 
   useEffect(() => {
     if (group) {
       const selectedGroup = GROUPS.find((g) => g.name === group);
+
       if (selectedGroup) {
         const shuffled = [...selectedGroup.words].sort(() => Math.random() - 0.5);
         setWords(shuffled);
@@ -217,6 +219,7 @@ export default function App() {
         setCorrectWords([]);
         setSkippedWords([]);
         setIsReview(false);
+        setSessionColor(selectedGroup.background)
       }
     }
   }, [group]);
@@ -305,7 +308,7 @@ export default function App() {
           >
             <i className="bi bi-x-circle-fill" style={{ color: "#6c757d" }}></i>
           </button>
-          <h1 className="mb-5 display-1 fw-bold" style={{ fontSize: "6rem" }}>{currentWord}</h1>
+          <h1 className="mb-5 display-1 fw-bold" style={{ fontSize: "6rem",  color: `${sessionColor}` }}>{currentWord}</h1>
           <div className="progress mb-3" style={{ height: "1.5rem", width: `${WIDTH}` }}>
             <div
               className="progress-bar"
