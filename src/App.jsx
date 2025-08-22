@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import "bootstrap-icons/font/bootstrap-icons.css";
+import confetti from "canvas-confetti";
 
 const GROUPS = [
   {
@@ -209,6 +210,16 @@ export default function App() {
       setWords(rest);
       setCurrentWord(rest[0]);
     } else {
+      if (skippedWords.length === 0) {
+        confetti({
+          angle: 90,
+          spread: 360,
+          startVelocity: 40,
+          particleCount: 200,
+          origin: { x: 0.5, y: 0.5 },
+        });
+      }
+
       setWords([]);
       setCurrentWord(null);
     }
