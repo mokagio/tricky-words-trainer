@@ -149,6 +149,12 @@ export function TrickyTitle() {
   );
 }
 
+function DancingHeader({ text }) {
+  return (
+    <h1 className="mb-5 shake" style={{ fontSize: "5rem" }}>{text}</h1>
+  )
+}
+
 function ButtonRow({ children }) {
   return (
     <div className="d-flex gap-3" style={{ width: `${WIDTH}` }}>
@@ -302,7 +308,7 @@ export default function App() {
         </>
       ) : skippedWords.length > 0 && !isReview ? (
         <>
-          <h1 className="mb-5" style={{ fontSize: "5rem" }}>🎉</h1>
+          <DancingHeader text="🎉" />
           <ButtonRow>
             <ActionButton onClick={handleStartReview} icon="arrow-repeat" bg="blue" />
             <ActionButton onClick={handleReset} icon="arrow-left" />
@@ -310,7 +316,7 @@ export default function App() {
         </>
       ) : (
         <>
-          <h1 className="mb-5" style={{ fontSize: "5rem" }}>🎉</h1>
+          <DancingHeader text="🎉" />
           <ButtonRow>
             <ActionButton onClick={handleReset} icon="arrow-left" />
           </ButtonRow>
