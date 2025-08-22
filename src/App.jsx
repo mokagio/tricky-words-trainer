@@ -2,10 +2,25 @@ import { useState, useEffect } from "react";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import confetti from "canvas-confetti";
 
+const BLUE = "#0d6efd"
+const ORANGE = '#ffa500'
+
 const GROUPS = [
   {
+    name: "Test One", // Off by default
+    background: "tomato",
+    text: "white",
+    words: ["one", "two", "three"]
+  },
+  {
+    name: "Test Two", // Off by default
+    background: "salmon",
+    text: "white",
+    words: ["four", "five", "six"]
+  },
+  {
     name: "Blue",
-    background: "#0d6efd",
+    background: BLUE,
     text: "white",
     words: [
       "I", "the", "he", "she",
@@ -206,6 +221,8 @@ export default function App() {
   const [isReview, setIsReview] = useState(false);
   const [initialCount, setInitialCount] = useState(0);
   const [sessionColor, setSessionColor] = useState(null);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [debugMode, setDebugMode] = useState(false);
 
   useEffect(() => {
     if (group) {
@@ -277,73 +294,107 @@ export default function App() {
 
   return (
     <div className="d-flex flex-column justify-content-center align-items-center min-vh-100 w-100">
-      {!group ? (
+      {isMenuOpen ? (
         <>
-          <TrickyTitle />
-          <div className="d-flex flex-column gap-3" style={{ width: "240px" }}>
-            {GROUPS.map(({ name, background, text }) => (
-              <button
-              key={name}
-              className="btn d-flex align-items-center justify-content-center"
-              style={{
-                backgroundColor: background,
-                color: text,
-                height: "64px",
-                fontSize: "1.5rem",
-                borderRadius: "0.75rem",
-              }}
-              onClick={() => setGroup(name)}
-            >
-                {name}
-            </button>
-            ))}
+        <h2 className="mb-4 text-center">Settings</h2>
+        <div className="form-check form-switch d-flex justify-content-center align-items-center gap-3 mb-4">
+          <label className="form-check-label ms-2" htmlFor="debugModeSwitch">
+            Debug Mode
+          </label>
+          <div className="form-check form-switch m-0">
+            <input
+              className="form-check-input"
+              type="checkbox"
+              role="switch"
+              id="debugModeSwitch"
+              checked={debugMode}
+              onChange={() => setDebugMode(!debugMode)}
+            />
           </div>
-        </>
-      ) : currentWord ? (
-        <>
+        </div>
+        <div>
           <button
+            onClick={() => setIsMenuOpen(false)}
+            className="btn btn"
+          >
+            <i className="bi bi-house-door-fill" style={{ color: BLUE }}></i>
+          </button>
+        </div>
+        </>
+      ) : (
+        <>
+          {!group ? (
+            <>
+            <TrickyTitle />
+            <div className="d-flex flex-column gap-3" style={{ width: "240px" }}>
+            {GROUPS
+              .filter(({ name }) => debugMode ? name.startsWith("Test") : !name.startsWith("Test") )
+              .map(({ name, background, text }) => (
+                <button
+                key={name}
+                className="btn d-flex align-items-center justify-content-center"
+                style={{
+                  backgroundColor: background,
+                    color: text,
+                    height: "64px",
+                    fontSize: "1.5rem",
+                    borderRadius: "0.75rem",
+                }}
+                onClick={() => setGroup(name)}
+              >
+              {name}
+              </button>
+            ))}
+              <ActionButton icon="list" bg="gray" onClick={() => setIsMenuOpen(true)} />
+            </div>
+            </>
+          ) : currentWord ? (
+            <>
+            <button
             onClick={handleClose}
             className="position-absolute top-0 end-0 m-3 btn btn-link text-dark fs-4"
             aria-label="Close"
           >
-            <i className="bi bi-x-circle-fill" style={{ color: "#6c757d" }}></i>
-          </button>
-          <h1 className="mb-5 display-1 fw-bold" style={{ fontSize: "6rem",  color: `${sessionColor}` }}>{currentWord}</h1>
-          <div className="progress mb-3" style={{ height: "1.5rem", width: `${WIDTH}` }}>
-            <div
+              <i className="bi bi-x-circle-fill" style={{ color: "#6c757d" }}></i>
+            </button>
+            <h1 className="mb-5 display-1 fw-bold" style={{ fontSize: "6rem",  color: `${sessionColor}` }}>{currentWord}</h1>
+            <div className="progress mb-3" style={{ height: "1.5rem", width: `${WIDTH}` }}>
+              <div
               className="progress-bar"
               role="progressbar"
-              style={{ width: `${progress}%`, backgroundColor: '#ffa500' }}
+              style={{ width: `${progress}%`, backgroundColor: `${ORANGE}` }}
               aria-valuenow={progress}
               aria-valuemin="0"
               aria-valuemax="100"
             ></div>
           </div>
-          <ButtonRow>
-            <ActionButton onClick={handleCorrect} icon="check2" bg="#198754" />
-            <ActionButton onClick={handleSkipped} icon="arrow-right" />
-          </ButtonRow>
+            <ButtonRow>
+              <ActionButton onClick={handleCorrect} icon="check2" bg="#198754" />
+              <ActionButton onClick={handleSkipped} icon="arrow-right" bg={ORANGE} />
+            </ButtonRow>
+            </>
+          ) : skippedWords.length > 0 && !isReview ? (
+            <>
+            <DancingHeader text={getEmoji(skippedWords.length, initialCount)} />
+            <ButtonRow>
+              <ActionButton onClick={handleReset} icon="house-door-fill" bg={BLUE} />
+              <ActionButton onClick={handleStartReview} icon="arrow-repeat" bg={ORANGE} />
+            </ButtonRow>
+            </>
+          ) : (
+            <>
+            <DancingHeader text={getEmoji(skippedWords.length, initialCount)} />
+            <ButtonRow>
+              <ActionButton onClick={handleReset} icon="house-door-fill" bg={BLUE} />
+            </ButtonRow>
+            </>
+          )}
+          {!group && (
+            <footer className="mt-5 text-muted small text-center">
+              © 2025 · <a href="https://github.com/mokagio/tricky-words-trainer" target="_blank">View Source</a>
+            </footer>
+          )}
         </>
-      ) : skippedWords.length > 0 && !isReview ? (
-        <>
-          <DancingHeader text={getEmoji(skippedWords.length, initialCount)} />
-          <ButtonRow>
-            <ActionButton onClick={handleStartReview} icon="arrow-repeat" bg="blue" />
-            <ActionButton onClick={handleReset} icon="arrow-left" />
-          </ButtonRow>
-        </>
-      ) : (
-        <>
-          <DancingHeader text={getEmoji(skippedWords.length, initialCount)} />
-          <ButtonRow>
-            <ActionButton onClick={handleReset} icon="arrow-left" />
-          </ButtonRow>
-        </>
-      )}
-      {!group && (
-        <footer className="mt-5 text-muted small text-center">
-          © 2025 · <a href="https://github.com/mokagio/tricky-words-trainer" target="_blank">View Source</a>
-        </footer>
       )}
     </div>
   );
