@@ -182,6 +182,21 @@ function ActionButton({ onClick, icon, label, bg = "#6c757d", color = "white" })
   );
 }
 
+function getEmoji(skippedCount, groupSize) {
+  if (groupSize === 0) return "🤔"; // fallback
+
+  const skippedPercentage = (skippedCount / groupSize) * 100;
+
+  switch (true) {
+    case skippedPercentage <= 10:
+      return "🎉";
+    case skippedPercentage <= 50:
+      return "👏";
+    default:
+      return "👍";
+  }
+}
+
 export default function App() {
   const [group, setGroup] = useState(null);
   const [words, setWords] = useState([]);
@@ -308,7 +323,7 @@ export default function App() {
         </>
       ) : skippedWords.length > 0 && !isReview ? (
         <>
-          <DancingHeader text="🎉" />
+          <DancingHeader text={getEmoji(skippedWords.length, initialCount)} />
           <ButtonRow>
             <ActionButton onClick={handleStartReview} icon="arrow-repeat" bg="blue" />
             <ActionButton onClick={handleReset} icon="arrow-left" />
@@ -316,7 +331,7 @@ export default function App() {
         </>
       ) : (
         <>
-          <DancingHeader text="🎉" />
+          <DancingHeader text={getEmoji(skippedWords.length, initialCount)} />
           <ButtonRow>
             <ActionButton onClick={handleReset} icon="arrow-left" />
           </ButtonRow>
