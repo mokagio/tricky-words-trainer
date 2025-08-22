@@ -345,7 +345,6 @@ export default function App() {
               {name}
               </button>
             ))}
-              <ActionButton icon="list" bg="gray" onClick={() => setIsMenuOpen(true)} />
             </div>
             </>
           ) : currentWord ? (
@@ -375,11 +374,11 @@ export default function App() {
             </>
           ) : skippedWords.length > 0 && !isReview ? (
             <>
-            <DancingHeader text={getEmoji(skippedWords.length, initialCount)} />
-            <ButtonRow>
-              <ActionButton onClick={handleReset} icon="house-door-fill" bg={BLUE} />
-              <ActionButton onClick={handleStartReview} icon="arrow-repeat" bg={ORANGE} />
-            </ButtonRow>
+              <DancingHeader text={getEmoji(skippedWords.length, initialCount)} />
+              <ButtonRow>
+                <ActionButton onClick={handleReset} icon="house-door-fill" bg={BLUE} />
+                <ActionButton onClick={handleStartReview} icon="arrow-repeat" bg={ORANGE} />
+              </ButtonRow>
             </>
           ) : (
             <>
@@ -391,7 +390,17 @@ export default function App() {
           )}
           {!group && (
             <footer className="mt-5 text-muted small text-center">
-              © 2025 · <a href="https://github.com/mokagio/tricky-words-trainer" target="_blank">View Source</a>
+              <span>© 2025</span>
+              <span>&nbsp;·&nbsp;</span>
+              <button
+                className="btn btn-link p-0 align-baseline"
+                onClick={() => setIsMenuOpen(true)}
+                style={{ fontSize: '0.875rem' }}
+              >
+                <i className="bi bi-list"></i>
+              </button>
+              <span>&nbsp;·&nbsp;</span>
+              <a href="https://github.com/mokagio/tricky-words-trainer" target="_blank">View Source</a>
             </footer>
           )}
         </>
