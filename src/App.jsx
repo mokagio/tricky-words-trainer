@@ -397,10 +397,10 @@ export default function App() {
                 onClick={() => setIsMenuOpen(true)}
                 style={{ fontSize: '0.875rem' }}
               >
-                <i className="bi bi-list"></i>
+                Parents
               </button>
               <span>&nbsp;·&nbsp;</span>
-              <a href="https://github.com/mokagio/tricky-words-trainer" target="_blank">View Source</a>
+              <a href="https://github.com/mokagio/tricky-words-trainer" target="_blank">Source</a>
             </footer>
           )}
         </>
