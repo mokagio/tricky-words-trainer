@@ -108,6 +108,26 @@ function shuffleColorsAndTilts(length) {
   return { colors, tilts };
 }
 
+function delay(ms) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
+function speakWord(word) {
+  return new Promise((resolve) => {
+    if (!word) return resolve();
+
+    speechSynthesis.cancel();
+
+    const utterance = new SpeechSynthesisUtterance(word);
+    utterance.lang = 'en-US';
+
+    utterance.onend = resolve;
+    utterance.onerror = resolve;
+
+    speechSynthesis.speak(utterance);
+  });
+}
+
 export function TrickyTitle() {
   const text = "Tricky Words";
   const visibleChars = text.replaceAll(" ", "").length;
@@ -282,7 +302,11 @@ export default function App() {
   };
 
   const handleCorrect = () => goToNextWord(correctWords, setCorrectWords);
-  const handleSkipped = () => goToNextWord(skippedWords, setSkippedWords);
+  const handleSkipped = async () => {
+    await speakWord(currentWord);
+    await delay(400)
+    goToNextWord(skippedWords, setSkippedWords);
+  };
 
   const handleReset = () => {
     setGroup(null);
@@ -437,7 +461,7 @@ export default function App() {
               </div>
               <ButtonRow>
                 <ActionButton onClick={handleCorrect} icon="check2" bg="#198754" />
-                <ActionButton onClick={handleSkipped} icon="arrow-right" bg={ORANGE} />
+                <ActionButton onClick={handleSkipped} icon="question-lg" bg={ORANGE} />
               </ButtonRow>
             </>
           ) : (
