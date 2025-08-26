@@ -294,6 +294,29 @@ export default function App() {
     }
   }, [group, setIndex, setsOfFour]);
 
+  function playCheerWithFadeOut() {
+    const cheer = new Audio('/tricky-words-trainer/cheer.mp3');
+    cheer.volume = 1;
+    cheer.play().catch(console.error);
+
+    // Wait a few seconds, then start fading out
+    setTimeout(() => {
+      const fadeOutDuration = 3000;
+      const fadeStep = 500;
+      const fadeAmount = cheer.volume / (fadeOutDuration / fadeStep);
+
+      const fadeOut = setInterval(() => {
+        if (cheer.volume > 0.05) {
+          cheer.volume -= fadeAmount;
+        } else {
+          cheer.volume = 0;
+          cheer.pause();
+          clearInterval(fadeOut);
+        }
+      }, fadeStep);
+    }, 500);
+  };
+
   const goToNextWord = (wordList, updateListFn) => {
     if (currentWord) {
       updateListFn((prev) => [...prev, currentWord]);
@@ -312,6 +335,7 @@ export default function App() {
           particleCount: 200,
           origin: { x: 0.5, y: 0.5 },
         });
+        playCheerWithFadeOut();
       }
 
       setWords([]);
@@ -404,6 +428,9 @@ export default function App() {
             >
               <i className="bi bi-house-door-fill" style={{ color: BLUE }}></i>
             </button>
+          </div>
+          <div className="justify-content-center align-items-center gap-3 mt-5 text-muted small">
+            <i>Crowd cheering sound effect by <a href="https://pixabay.com/users/freesound_community-46691455/?utm_source=link-attribution&utm_medium=referral&utm_campaign=music&utm_content=6713">freesound_community</a> from <a href="https://pixabay.com//?utm_source=link-attribution&utm_medium=referral&utm_campaign=music&utm_content=6713">Pixabay</a>.</i>
           </div>
         </>
       ) : (
