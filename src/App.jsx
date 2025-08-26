@@ -317,6 +317,11 @@ export default function App() {
     }, 500);
   };
 
+  const playLevelUpSound = () => {
+    const audio = new Audio('/tricky-words-trainer/level-up.mp3');
+    audio.play().catch((err) => console.warn('Audio play failed:', err));
+  };
+
   const goToNextWord = (wordList, updateListFn) => {
     if (currentWord) {
       updateListFn((prev) => [...prev, currentWord]);
@@ -344,7 +349,11 @@ export default function App() {
     }
   };
 
-  const handleCorrect = () => goToNextWord(correctWords, setCorrectWords);
+  const handleCorrect = () => {
+    playLevelUpSound()
+    goToNextWord(correctWords, setCorrectWords);
+  } 
+
   const handleSkipped = async () => {
     await speakWord(currentWord);
     await delay(400)
@@ -431,6 +440,7 @@ export default function App() {
           </div>
           <div className="justify-content-center align-items-center gap-3 mt-5 text-muted small">
             <i>Crowd cheering sound effect by <a href="https://pixabay.com/users/freesound_community-46691455/?utm_source=link-attribution&utm_medium=referral&utm_campaign=music&utm_content=6713">freesound_community</a> from <a href="https://pixabay.com//?utm_source=link-attribution&utm_medium=referral&utm_campaign=music&utm_content=6713">Pixabay</a>.</i>
+            <i>Level up sound effect by <a href="https://pixabay.com/users/universfield-28281460/?utm_source=link-attribution&utm_medium=referral&utm_campaign=music&utm_content=326133">Universfield</a> from <a href="https://pixabay.com//?utm_source=link-attribution&utm_medium=referral&utm_campaign=music&utm_content=326133">Pixabay</a>.</i>
           </div>
         </>
       ) : (
