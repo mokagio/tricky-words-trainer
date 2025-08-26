@@ -247,7 +247,6 @@ export default function App() {
       const utterance = new SpeechSynthesisUtterance(word.toLowerCase());
 
       const voices = speechSynthesis.getVoices();
-      console.log(voices.map(v => v.name))
       // English-Australian, slightly animated
       const karen = voices.find(v => v.name == 'Karen');
       if (karen != undefined) {
@@ -350,9 +349,12 @@ export default function App() {
   };
 
   const handleCorrect = () => {
-    playLevelUpSound()
+    if (words.length > 1) {
+      playLevelUpSound()
+    }
+
     goToNextWord(correctWords, setCorrectWords);
-  } 
+  }
 
   const handleSkipped = async () => {
     await speakWord(currentWord);
