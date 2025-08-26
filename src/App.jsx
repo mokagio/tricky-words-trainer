@@ -243,8 +243,18 @@ export default function App() {
 
       setIsSpeaking(true)
 
-      const utterance = new SpeechSynthesisUtterance(word);
-      utterance.lang = 'en-US';
+      // toLowerCase to avoid "I" being "capital i"
+      const utterance = new SpeechSynthesisUtterance(word.toLowerCase());
+
+      const voices = speechSynthesis.getVoices();
+      console.log(voices.map(v => v.name))
+      // English-Australian, slightly animated
+      const karen = voices.find(v => v.name == 'Karen');
+      if (karen != undefined) {
+        utterance.voice = karen
+      } else {
+        utterance.language = 'en-US'
+      }
 
       utterance.onend = () => {
         setIsSpeaking(false)
