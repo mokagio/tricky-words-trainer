@@ -108,26 +108,6 @@ function shuffleColorsAndTilts(length) {
   return { colors, tilts };
 }
 
-function delay(ms) {
-  return new Promise((resolve) => setTimeout(resolve, ms));
-}
-
-function speakWord(word) {
-  return new Promise((resolve) => {
-    if (!word) return resolve();
-
-    speechSynthesis.cancel();
-
-    const utterance = new SpeechSynthesisUtterance(word);
-    utterance.lang = 'en-US';
-
-    utterance.onend = resolve;
-    utterance.onerror = resolve;
-
-    speechSynthesis.speak(utterance);
-  });
-}
-
 export function TrickyTitle() {
   const text = "Tricky Words";
   const visibleChars = text.replaceAll(" ", "").length;
@@ -249,6 +229,35 @@ export default function App() {
   const [setsOfFour, setSetsOfFour] = useState(false);
   const [setIndex, setSetIndex] = useState(0);
   const [isSetComplete, setIsSetComplete] = useState(false);
+  const [isSpeaking, setIsSpeaking] = useState(false);
+
+  function delay(ms) {
+    return new Promise((resolve) => setTimeout(resolve, ms));
+  }
+
+  function speakWord(word) {
+    return new Promise((resolve) => {
+      if (!word) return resolve();
+
+      speechSynthesis.cancel();
+
+      setIsSpeaking(true)
+
+      const utterance = new SpeechSynthesisUtterance(word);
+      utterance.lang = 'en-US';
+
+      utterance.onend = () => {
+        setIsSpeaking(false)
+        resolve();
+      }
+      utterance.onerror = () => {
+        setIsSpeaking(false)
+        resolve();
+      }
+
+      speechSynthesis.speak(utterance);
+    });
+  }
 
   useEffect(() => {
     if (group) {
@@ -447,7 +456,12 @@ export default function App() {
               >
                 <i className="bi bi-x-circle-fill" style={{ color: "#6c757d" }}></i>
               </button>
-              <h1 className="mb-5 display-1 fw-bold" style={{ fontSize: "6rem",  color: `${sessionColor}` }}>{currentWord}</h1>
+              <h1
+                className={`mb-5 display-1 fw-bold ${isSpeaking ? 'dance' : ''}`}
+                style={{ fontSize: "6rem",  color: `${sessionColor}` }}
+              >
+                {currentWord}
+              </h1>
               <div className="progress mb-3" style={{ height: "1.5rem", width: `${WIDTH}` }}>
                 <div
                   className="progress-bar"
