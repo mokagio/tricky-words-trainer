@@ -440,9 +440,12 @@ export default function App() {
               <i className="bi bi-house-door-fill" style={{ color: BLUE }}></i>
             </button>
           </div>
-          <div className="justify-content-center align-items-center gap-3 mt-5 text-muted small">
-            <i>Crowd cheering sound effect by <a href="https://pixabay.com/users/freesound_community-46691455/?utm_source=link-attribution&utm_medium=referral&utm_campaign=music&utm_content=6713">freesound_community</a> from <a href="https://pixabay.com//?utm_source=link-attribution&utm_medium=referral&utm_campaign=music&utm_content=6713">Pixabay</a>.</i>
-            <i>Level up sound effect by <a href="https://pixabay.com/users/universfield-28281460/?utm_source=link-attribution&utm_medium=referral&utm_campaign=music&utm_content=326133">Universfield</a> from <a href="https://pixabay.com//?utm_source=link-attribution&utm_medium=referral&utm_campaign=music&utm_content=326133">Pixabay</a>.</i>
+          <div className="d-flex justify-content-center align-items-center gap-3 mt-5 text-muted small">
+            <p>
+              <i>Crowd cheering sound effect by <a href="https://pixabay.com/users/freesound_community-46691455/?utm_source=link-attribution&utm_medium=referral&utm_campaign=music&utm_content=6713">freesound_community</a> from <a href="https://pixabay.com//?utm_source=link-attribution&utm_medium=referral&utm_campaign=music&utm_content=6713">Pixabay</a>.</i>
+              <br/>
+              <i>Level up sound effect by <a href="https://pixabay.com/users/universfield-28281460/?utm_source=link-attribution&utm_medium=referral&utm_campaign=music&utm_content=326133">Universfield</a> from <a href="https://pixabay.com//?utm_source=link-attribution&utm_medium=referral&utm_campaign=music&utm_content=326133">Pixabay</a>.</i>
+            </p>
           </div>
         </>
       ) : (
