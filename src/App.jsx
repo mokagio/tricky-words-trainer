@@ -7,16 +7,19 @@ const ORANGE = '#ffa500'
 
 const GROUPS = [
   {
-    name: "Test One", // Off by default
+    name: "Eight Words", // Off by default
     background: "tomato",
     text: "white",
-    words: ["one", "two", "three"]
+    words: [
+      "one", "two", "three", "four",
+      "five", "six", "seven", "eight",
+    ]
   },
   {
-    name: "Test Two", // Off by default
+    name: "Three Words", // Off by default
     background: "salmon",
     text: "white",
-    words: ["four", "five", "six"]
+    words: ["one", "two", "three"]
   },
   {
     name: "Blue",
@@ -223,23 +226,34 @@ export default function App() {
   const [sessionColor, setSessionColor] = useState(null);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [debugMode, setDebugMode] = useState(false);
+  const [setsOfFour, setSetsOfFour] = useState(false);
+  const [setIndex, setSetIndex] = useState(0);
+  const [isSetComplete, setIsSetComplete] = useState(false);
 
   useEffect(() => {
     if (group) {
       const selectedGroup = GROUPS.find((g) => g.name === group);
 
       if (selectedGroup) {
-        const shuffled = [...selectedGroup.words].sort(() => Math.random() - 0.5);
-        setWords(shuffled);
-        setInitialCount(shuffled.length);
-        setCurrentWord(shuffled[0]);
-        setCorrectWords([]);
+        let selectedWords;
+
+        if (setsOfFour) {
+          const start = setIndex * 4;
+          const end = start + 4;
+          selectedWords = selectedGroup.words.slice(start, end);
+        } else {
+          selectedWords = [...selectedGroup.words].sort(() => Math.random() - 0.5);
+        }
+
+        setWords(selectedWords);
+        setInitialCount(selectedWords.length);
+        setCurrentWord(selectedWords[0]);
         setSkippedWords([]);
         setIsReview(false);
         setSessionColor(selectedGroup.background)
       }
     }
-  }, [group]);
+  }, [group, setIndex, setsOfFour]);
 
   const goToNextWord = (wordList, updateListFn) => {
     if (currentWord) {
@@ -263,6 +277,7 @@ export default function App() {
 
       setWords([]);
       setCurrentWord(null);
+      setIsSetComplete(true)
     }
   };
 
@@ -277,6 +292,8 @@ export default function App() {
     setSkippedWords([]);
     setIsReview(false);
     setInitialCount(0);
+    setSetIndex(0)
+    setIsSetComplete(false);
   };
 
   const handleClose = handleReset
@@ -287,39 +304,64 @@ export default function App() {
     setInitialCount(skippedWords.length);
     setSkippedWords([]);
     setIsReview(true);
+    setIsSetComplete(false);
   };
 
   const selectedGroup = GROUPS.find((g) => g.name === group);
   const progress = ((initialCount - words.length) / initialCount) * 100;
+  const hasMoreSets = (selectedGroup !== undefined) && setsOfFour && ((setIndex + 1) * 4 < selectedGroup.words.length);
 
   return (
     <div className="d-flex flex-column justify-content-center align-items-center min-vh-100 w-100">
       {isMenuOpen ? (
         <>
-        <h2 className="mb-4 text-center">Settings</h2>
-        <div className="form-check form-switch d-flex justify-content-center align-items-center gap-3 mb-4">
-          <label className="form-check-label ms-2" htmlFor="debugModeSwitch">
-            Debug Mode
-          </label>
-          <div className="form-check form-switch m-0">
-            <input
-              className="form-check-input"
-              type="checkbox"
-              role="switch"
-              id="debugModeSwitch"
-              checked={debugMode}
-              onChange={() => setDebugMode(!debugMode)}
-            />
+          <h2 className="mb-4 text-center">Settings</h2>
+          {/* Sets of Four*/}
+          <div className="form-check form-switch d-flex justify-content-center align-items-center gap-3 mb-1">
+            <label className="form-check-label ms-2" htmlFor="setsOfFourSwitch">
+              Sets of Four
+            </label>
+            <div className="form-check form-switch m-0">
+              <input
+                className="form-check-input"
+                type="checkbox"
+                role="switch"
+                id="setsOfFourSwitch"
+                checked={setsOfFour}
+                onChange={() => setSetsOfFour(!setsOfFour)}
+              />
+              </div>
           </div>
-        </div>
-        <div>
-          <button
-            onClick={() => setIsMenuOpen(false)}
-            className="btn btn"
-          >
-            <i className="bi bi-house-door-fill" style={{ color: BLUE }}></i>
-          </button>
-        </div>
+          <p className="text-center text-muted small mb-4">
+            Split each Tricky Words group in three sets of four words to make it easier to learn new groups.
+            <br/>
+            This also disables shuffling.
+          </p>
+
+          {/* Debug Mode */}
+          <div className="form-check form-switch d-flex justify-content-center align-items-center gap-3 mb-4">
+            <label className="form-check-label ms-2" htmlFor="debugModeSwitch">
+              Debug Mode
+            </label>
+            <div className="form-check form-switch m-0">
+              <input
+                className="form-check-input"
+                type="checkbox"
+                role="switch"
+                id="debugModeSwitch"
+                checked={debugMode}
+                onChange={() => setDebugMode(!debugMode)}
+              />
+            </div>
+          </div>
+          <div>
+            <button
+              onClick={() => setIsMenuOpen(false)}
+              className="btn btn"
+            >
+              <i className="bi bi-house-door-fill" style={{ color: BLUE }}></i>
+            </button>
+          </div>
         </>
       ) : (
         <>
@@ -328,7 +370,7 @@ export default function App() {
             <TrickyTitle />
             <div className="d-flex flex-column gap-3" style={{ width: "240px" }}>
             {GROUPS
-              .filter(({ name }) => debugMode ? name.startsWith("Test") : !name.startsWith("Test") )
+              .filter(({ name }) => debugMode ? name.endsWith("Words") : !name.endsWith("Words") )
               .map(({ name, background, text }) => (
                 <button
                 key={name}
@@ -347,46 +389,59 @@ export default function App() {
             ))}
             </div>
             </>
-          ) : currentWord ? (
-            <>
-            <button
-            onClick={handleClose}
-            className="position-absolute top-0 end-0 m-3 btn btn-link text-dark fs-4"
-            aria-label="Close"
-          >
-              <i className="bi bi-x-circle-fill" style={{ color: "#6c757d" }}></i>
-            </button>
-            <h1 className="mb-5 display-1 fw-bold" style={{ fontSize: "6rem",  color: `${sessionColor}` }}>{currentWord}</h1>
-            <div className="progress mb-3" style={{ height: "1.5rem", width: `${WIDTH}` }}>
-              <div
-              className="progress-bar"
-              role="progressbar"
-              style={{ width: `${progress}%`, backgroundColor: `${ORANGE}` }}
-              aria-valuenow={progress}
-              aria-valuemin="0"
-              aria-valuemax="100"
-            ></div>
-          </div>
-            <ButtonRow>
-              <ActionButton onClick={handleCorrect} icon="check2" bg="#198754" />
-              <ActionButton onClick={handleSkipped} icon="arrow-right" bg={ORANGE} />
-            </ButtonRow>
-            </>
-          ) : skippedWords.length > 0 && !isReview ? (
+          ) : isSetComplete ? (
             <>
               <DancingHeader text={getEmoji(skippedWords.length, initialCount)} />
               <ButtonRow>
                 <ActionButton onClick={handleReset} icon="house-door-fill" bg={BLUE} />
-                <ActionButton onClick={handleStartReview} icon="arrow-repeat" bg={ORANGE} />
+                {hasMoreSets ? (
+                  <ActionButton
+                    onClick={() => {
+                      setSetIndex((i) => i + 1);
+                      setIsSetComplete(false);
+                    }}
+                    icon="arrow-right"
+                    bg={ORANGE}
+                  />
+                ) : (
+                  !isReview && skippedWords.length > 0 && (
+                    <ActionButton
+                      onClick={handleStartReview}
+                      icon="arrow-repeat"
+                      bg={ORANGE}
+                    />
+                  )
+                )}
+              </ButtonRow>
+            </>
+          ) : currentWord ? (
+            <>
+              <button
+                onClick={handleClose}
+                className="position-absolute top-0 end-0 m-3 btn btn-link text-dark fs-4"
+                aria-label="Close"
+              >
+                <i className="bi bi-x-circle-fill" style={{ color: "#6c757d" }}></i>
+              </button>
+              <h1 className="mb-5 display-1 fw-bold" style={{ fontSize: "6rem",  color: `${sessionColor}` }}>{currentWord}</h1>
+              <div className="progress mb-3" style={{ height: "1.5rem", width: `${WIDTH}` }}>
+                <div
+                  className="progress-bar"
+                  role="progressbar"
+                  style={{ width: `${progress}%`, backgroundColor: `${ORANGE}` }}
+                  aria-valuenow={progress}
+                  aria-valuemin="0"
+                  aria-valuemax="100"
+                >
+                </div>
+              </div>
+              <ButtonRow>
+                <ActionButton onClick={handleCorrect} icon="check2" bg="#198754" />
+                <ActionButton onClick={handleSkipped} icon="arrow-right" bg={ORANGE} />
               </ButtonRow>
             </>
           ) : (
-            <>
-            <DancingHeader text={getEmoji(skippedWords.length, initialCount)} />
-            <ButtonRow>
-              <ActionButton onClick={handleReset} icon="house-door-fill" bg={BLUE} />
-            </ButtonRow>
-            </>
+            <>{/* should be able to remove this? */}</>
           )}
           {!group && (
             <footer className="mt-5 text-muted small text-center">
