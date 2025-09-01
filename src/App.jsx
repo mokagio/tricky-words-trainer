@@ -226,7 +226,10 @@ export default function App() {
   const [sessionColor, setSessionColor] = useState(null);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [debugMode, setDebugMode] = useState(false);
-  const [setsOfFour, setSetsOfFour] = useState(false);
+  const [setsOfFour, setSetsOfFour] = useState(() => {
+    const stored = localStorage.getItem('setsOfFour');
+    return stored === 'true';
+  });
   const [setIndex, setSetIndex] = useState(0);
   const [isSetComplete, setIsSetComplete] = useState(false);
   const [isSpeaking, setIsSpeaking] = useState(false);
@@ -384,6 +387,10 @@ export default function App() {
     setIsReview(true);
     setIsSetComplete(false);
   };
+
+  useEffect(() => {
+    localStorage.setItem('setsOfFour', setsOfFour)
+  }, [setsOfFour])
 
   const selectedGroup = GROUPS.find((g) => g.name === group);
   const progress = ((initialCount - words.length) / initialCount) * 100;
