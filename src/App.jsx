@@ -296,8 +296,9 @@ export default function App() {
     }
   }, [group, setIndex, setsOfFour]);
 
-  function playCheerWithFadeOut() {
-    const cheer = new Audio('/tricky-words-trainer/cheer.mp3');
+  function playCheerWithFadeOut(topMarks) {
+    const name = topMarks ? 'cheer' : 'applause'
+    const cheer = new Audio(`/tricky-words-trainer/${name}.mp3`);
     cheer.volume = 1;
     cheer.play().catch(console.error);
 
@@ -319,8 +320,9 @@ export default function App() {
     }, 500);
   };
 
-  const playLevelUpSound = () => {
-    const audio = new Audio('/tricky-words-trainer/level-up.mp3');
+  const playLevelUpSound = ({ isCorrect }) => {
+    const name = isCorrect ? 'level-up' : 'level-up-skipped'
+    const audio = new Audio(`/tricky-words-trainer/${name}.mp3`);
     audio.play().catch((err) => console.warn('Audio play failed:', err));
   };
 
@@ -342,8 +344,8 @@ export default function App() {
           particleCount: 200,
           origin: { x: 0.5, y: 0.5 },
         });
-        playCheerWithFadeOut();
       }
+      playCheerWithFadeOut(skippedWords.length <= 1);
 
       setWords([]);
       setCurrentWord(null);
@@ -359,8 +361,8 @@ export default function App() {
     await speakWord(currentWord);
     await delay(400)
 
-    if (words.length > 1 && isCorrect) {
-      playLevelUpSound()
+    if (words.length > 1) {
+      playLevelUpSound({ isCorrect: isCorrect })
     }
 
     goToNextWord(words, isCorrect ? setCorrectWords : setSkippedWords);
@@ -458,9 +460,9 @@ export default function App() {
           </div>
           <div className="d-flex justify-content-center align-items-center gap-3 mt-5 text-muted small">
             <p>
-              <i>Crowd cheering sound effect by <a href="https://pixabay.com/users/freesound_community-46691455/?utm_source=link-attribution&utm_medium=referral&utm_campaign=music&utm_content=6713">freesound_community</a> from <a href="https://pixabay.com//?utm_source=link-attribution&utm_medium=referral&utm_campaign=music&utm_content=6713">Pixabay</a>.</i>
+              <i>Crowd cheering and appluading sounds effect by <a href="https://pixabay.com/users/freesound_community-46691455/?utm_source=link-attribution&utm_medium=referral&utm_campaign=music&utm_content=6713">freesound_community</a> from <a href="https://pixabay.com//?utm_source=link-attribution&utm_medium=referral&utm_campaign=music&utm_content=6713">Pixabay</a>.</i>
               <br/>
-              <i>Level up sound effect by <a href="https://pixabay.com/users/universfield-28281460/?utm_source=link-attribution&utm_medium=referral&utm_campaign=music&utm_content=326133">Universfield</a> from <a href="https://pixabay.com//?utm_source=link-attribution&utm_medium=referral&utm_campaign=music&utm_content=326133">Pixabay</a>.</i>
+              <i>Level up sound effects by <a href="https://pixabay.com/users/universfield-28281460/?utm_source=link-attribution&utm_medium=referral&utm_campaign=music&utm_content=326133">Universfield</a> from <a href="https://pixabay.com//?utm_source=link-attribution&utm_medium=referral&utm_campaign=music&utm_content=326133">Pixabay</a>.</i>
             </p>
           </div>
         </>
