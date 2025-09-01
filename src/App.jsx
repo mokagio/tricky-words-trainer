@@ -351,18 +351,27 @@ export default function App() {
     }
   };
 
-  const handleCorrect = () => {
-    if (words.length > 1) {
+  const handleWordTransition = async ({ isCorrect }) => {
+    if (!currentWord) return;
+
+    window.speechSynthesis.cancel();
+
+    await speakWord(currentWord);
+    await delay(400)
+
+    if (words.length > 1 && isCorrect) {
       playLevelUpSound()
     }
 
-    goToNextWord(correctWords, setCorrectWords);
+    goToNextWord(words, isCorrect ? setCorrectWords : setSkippedWords);
+  };
+
+  const handleCorrect = () => {
+    handleWordTransition({ isCorrect: true })
   }
 
   const handleSkipped = async () => {
-    await speakWord(currentWord);
-    await delay(400)
-    goToNextWord(skippedWords, setSkippedWords);
+    handleWordTransition({ isCorrect: false })
   };
 
   const handleReset = () => {
