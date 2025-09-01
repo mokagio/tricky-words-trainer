@@ -81,6 +81,18 @@ const GROUPS = [
       "after", "every", "mother", "father"
     ],
   },
+  {
+    name: "SATPIN", // Also know as blenging group 1
+    background: "#663399", // Rebecca purple
+    text: "white",
+    words: [
+      "at", "an", "in", "it", "is",
+      "sit", "sat", "pin", "pan", "pat",
+      "tip", "tap", "tin", "sip", "sap",
+      "nap", "nip", "pit", "nit", "tan",
+      "spin", "span", "snap"
+    ]
+  },
 ];
 
 const TRICKY_COLORS = GROUPS
